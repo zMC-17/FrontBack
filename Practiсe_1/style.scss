@@ -1,0 +1,30 @@
+@use "variables" as vars;
+@use "mixins" as mixins;
+
+
+.product {
+
+    padding: vars.$space-md;
+    display: grid;
+    place-items: center;
+    background-color: vars.$primary-color;
+    border-width: 2px;
+    border-color: vars.$secondary-color;
+    @include mixins.rounded(10%);
+    width: 33%;
+
+    &__image {
+        @include mixins.rounded(50%);
+        padding: vars.$space-md;
+
+    }
+
+    &__content {
+        padding: vars.$space-ms;
+    }
+
+    &__title {
+        font-size: vars.$header-text-size
+    }
+
+}

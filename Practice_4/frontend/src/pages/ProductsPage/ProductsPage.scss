@@ -1,0 +1,474 @@
+$bg: #0b0f19;
+$panel: rgba(255, 255, 255, 0.03);
+$border: rgba(255, 255, 255, 0.10);
+$text: #e7eaf3;
+$primary: rgba(99, 102, 241, 0.55);
+$primaryBg: rgba(99, 102, 241, 0.18);
+$danger: rgba(239, 68, 68, 0.45);
+$dangerBg: rgba(239, 68, 68, 0.12);
+$success: rgba(34, 197, 94, 0.45);
+$successBg: rgba(34, 197, 94, 0.12);
+$warning: rgba(245, 158, 11, 0.45);
+
+@mixin card($radius: 12px) {
+    border-radius: $radius;
+    background: $panel;
+}
+
+@mixin container($w: 1200px) {  // Увеличил максимальную ширину для сетки
+    max-width: $w;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: $bg;
+    color: $text;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+
+    &__inner {
+        @include container();
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__right {
+        opacity: 0.75;
+        font-size: 13px;
+    }
+}
+
+.brand {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+}
+
+.container {
+    @include container();
+    padding: 20px 16px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+}
+
+.btn {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    &--primary {
+        background: $primaryBg;
+        border: 1px solid $primary;
+
+        &:hover {
+            background: rgba(99, 102, 241, 0.25);
+        }
+    }
+
+    &--danger {
+        background: $dangerBg;
+        border: 1px solid $danger;
+
+        &:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+    }
+
+    &--success {
+        background: $successBg;
+        border: 1px solid $success;
+
+        &:hover {
+            background: rgba(34, 197, 94, 0.2);
+        }
+    }
+}
+
+// Сетка товаров - вместо .list
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 40px;
+    margin-top: 10px;
+}
+
+.empty {
+    grid-column: 1 / -1;  // Растягивается на всю сетку
+    padding: 48px 18px;
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.18);
+    opacity: 0.85;
+    text-align: center;
+    font-size: 16px;
+    background: $panel;
+}
+
+.productCard {
+    @include card(16px);
+    padding: 16px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    // Явная окантовка с большей контрастностью
+    border: 1px solid rgba(255, 255, 255, 0.25); // Увеличил прозрачность с 0.10 до 0.25
+
+    // Тень для объема
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.4); // Еще ярче при наведении
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.productHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $border;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.productId {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 11px;
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.productStock {
+    font-size: 12px;
+    margin: 6px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: $successBg;
+    border: 1px solid $success;
+    color: #a5f3b6;
+    white-space: nowrap;
+
+    &.out-of-stock {
+        background: $dangerBg;
+        border: 1px solid $danger;
+        color: #f9b4b4;
+    }
+}
+
+.productBody {
+    flex: 1; // Занимает все доступное место
+    margin-bottom: 16px;
+}
+
+.productName {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    color: #ffffff;
+    line-height: 1.3;
+
+    // Обрезаем длинные названия
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 46px;
+}
+
+.productCategory {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 12px;
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+}
+
+.productDescription {
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.85;
+    margin: 12px 0;
+    padding: 8px 0;
+    border-top: 1px dashed $border;
+    border-bottom: 1px dashed $border;
+
+    // Обрезаем длинное описание
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 70px;
+}
+
+.productPrice {
+    font-size: 22px;
+    font-weight: 700;
+    color: #a5b4fc;
+    margin-top: 12px;
+}
+
+.productFooter {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    border-top: 1px solid $border;
+    padding-top: 16px;
+    margin-top: 8px;
+
+    .btn {
+        flex: 1; // Кнопки одинаковой ширины
+        padding: 8px 6px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+}
+
+// Адаптив для мобильных
+@media (max-width: 768px) {
+    .productsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+    }
+
+    .productFooter {
+        flex-direction: column;
+
+        .btn {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .productsGrid {
+        grid-template-columns: 1fr; // На маленьких экранах одна колонка
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+
+        .btn {
+            width: 100%;
+        }
+    }
+}
+
+// Стили для модального окна (оставляем как есть)
+.modal {
+    max-width: 520px;
+
+    &__content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+.required-mark {
+    color: #f87171;
+    margin-left: 4px;
+    font-size: 16px;
+}
+
+.stock-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .stock-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+
+        &.low-stock {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid $warning;
+            color: #fcd34d;
+        }
+
+        &.in-stock {
+            background: $successBg;
+            border: 1px solid $success;
+            color: #a5f3b6;
+        }
+
+        &.out-of-stock {
+            background: $dangerBg;
+            border: 1px solid $danger;
+            color: #f9b4b4;
+        }
+    }
+}
+
+.footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+
+    &__inner {
+        @include container();
+        padding: 14px 16px;
+        opacity: 0.7;
+        font-size: 13px;
+    }
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.modal {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #0f1526;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+
+    &__header {
+        padding: 16px 20px;
+        border-bottom: 1px solid $border;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid $border;
+    }
+}
+
+.iconBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    outline: none;
+    font-size: 15px;
+    transition: all 0.2s ease;
+
+    &:focus {
+        border-color: $primary;
+        background: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.25);
+    }
+}
